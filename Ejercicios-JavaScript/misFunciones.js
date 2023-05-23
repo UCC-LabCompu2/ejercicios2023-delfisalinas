@@ -5,28 +5,161 @@
  * @param {number} valor - COntiene el valor del input que ingreso el usuario
  */
 
-function convertirUnidades(id, valor){
+convertirUnidades = (id, valor) => {
+    let met, pul, pie, tar;
+
+    if(valor.includes(",")){
+        valor=valor.replace (",", ".");
+    }
+
     if (isNaN(valor)){
         alert("El valor ingresado es incorrecto");
-        document.lasUnidades.unid_metro.value = " ";
-        document.lasUnidades.unid_pulgada.value= " ";
-        document.lasUnidades.unid_pie.value= " ";
-        document.lasUnidades.unid_yarda.value= " ";
+        met = " ";
+        pul= " ";
+        pie= " ";
+        yar= " ";
     } else if (id=="metro"){
-        document.lasUnidades.unid_pulgada.value= valor*39.3701;
-        document.lasUnidades.unid_pie.value= valor * 3.28084;
-        document.lasUnidades.unid_yarda.value= valor * 1.09361;
+        met=valor;
+        pul= valor*39.3701;
+        pie= valor * 3.28084;
+        yar= valor * 1.09361;
     } else if (id=="pulgada") {
-        document.lasUnidades.unid_metro.value = valor * 0.0254;
-        document.lasUnidades.unid_pie.value = valor * 0.08333;
-        document.lasUnidades.unid_yarda.value = valor * 0.027778;
+        pul=valor;
+        met = valor * 0.0254;
+        pie = valor * 0.08333;
+        yar = valor * 0.027778;
     } else if (id=="pie") {
-        document.lasUnidades.unid_metro.value = valor * 0.3048;
-        document.lasUnidades.unid_pulgada.value = valor * 12;
-        document.lasUnidades.unid_yarda.value = valor * 0.333333;
+        pie=valor;
+        met = valor * 0.3048;
+        pul = valor * 12;
+        yar = valor * 0.333333;
     } else if (id=="yarda") {
-        document.lasUnidades.unid_metro.value = valor * 0.9144;
-        document.lasUnidades.unid_pulgada.value = valor * 36;
-        document.lasUnidades.unid_pie.value = valor * 3;
+        yar=valor;
+        met = valor * 0.9144;
+        pul = valor * 36;
+        pie = valor * 3;
     }
+    document.lasUnidades.unid_metro.value =Number(met).toFixed(2);
+    document.lasUnidades.unid_pulgada.value= Number(pul).toFixed(2);
+    document.lasUnidades.unid_pie.value= Number(pie).toFixed(2);
+    document.lasUnidades.unid_yarda.value= Number(yar).toFixed(2);
+}
+
+
+/**
+ * Convierte grados a radianes o radianes a grados
+ * @method convertirGR
+ * @param {string} id - Id del elemento input del html
+ */
+// mejorar esta funcion
+convertirGR = (id) => {
+    let gr, rad;
+    if(id=="grados"){
+        gr= document.getElementById("grados").value;
+        document.getElementById("radianes").value= (gr*Math.PI)/180;
+        if (isNaN(gr)){
+            alert("El valor ingresado es incorrecto");
+            gr= " ";
+        }
+    } else if(id=="radianes") {
+        rad= document.getElementById("radianes").value;
+    document.getElementById("grados").value= (rad*180)/Math.PI;
+        if (isNaN(rad)){
+            alert("El valor ingresado es incorrecto");
+            rad= " ";
+        }
+}
+}
+
+/**
+ * Muestra o oculta un div en la parte inferior
+ * @method mostrar_ocultar
+ * @param {string} id - Id del elemento input radio en html
+ */
+let mostrar_ocultar = (id) =>{
+    if (id==="mostrarDiv"){
+        document.getElementsByName("unDiv")[0].style.display = 'block';
+    } else{
+        document.getElementsByName("unDiv")[0].style.display = 'none';
+    }
+}
+
+/**
+ * SUma 2 inputs introducidos por el usuario
+ * @method sumar
+ */
+//agregar verficacion de letras para no obtener resultados Nan
+let sumar =() =>{
+    let res, s1, s2;
+    s1=Number(document.operacionesMat.sum_num1.value)
+    s2= Number(document.operacionesMat.sum_num2.value)
+    res= s1 +s2 ;
+    document.getElementById("totalS").innerHTML=res;
+}
+let restar =() =>{
+    let res, s1, s2;
+    s1=Number(document.operacionesMat.res_num1.value)
+    s2= Number(document.operacionesMat.res_num2.value)
+    res= s1 -s2 ;
+    document.getElementById("totalR").innerHTML=res;
+}
+let multiplicacion =() =>{
+    let res, s1, s2;
+    s1=Number(document.operacionesMat.mul_num1.value)
+    s2= Number(document.operacionesMat.mul_num2.value)
+    res= s1 *s2 ;
+    document.getElementById("totalM").innerHTML=res;
+}
+let dividir =() =>{
+    let res, s1, s2;
+    s1=Number(document.operacionesMat.div_num1.value)
+    s2= Number(document.operacionesMat.div_num2.value)
+    res= s1 /s2 ;
+    document.operacionesMat.div_total.value=res;
+}
+/**
+ * Si el campo contiene una letra, blanquee el campo
+ * @method verLetra
+ * @param {string} id- Id del elemento input del html
+ * @param  {number/string} value- Contiene el valor del input que ingresa el usuario
+ */
+let verLetra = (id, value) => {
+    if(isNaN(value)){
+        document.getElementById(id).value = " ";
+    }
+}
+
+
+let generarUrl = () => {
+    const dist = document.getElementById("distancia").value;
+    const uni = document.getElementsByName("unidades") [0].value;
+
+    const urlCompl = `segundaWeb.html#${dist}#${uni}`;
+    window.open(urlCompl);
+}
+
+let cargarValor = () => {
+    let urlCompleta = window.location.href;
+    console.log(urlCompleta);
+    urlCompleta = urlCompleta.split ("#");
+
+    const distancia = urlCompleta[1];
+    const unidad = urlCompleta[2];
+    document.getElementById("dist").value = `${distancia} ${unidad}`;
+}
+let guardarLS = () => {
+    const dist = document.getElementById("distancia").value;
+    const uni = document.getElementsByName("unidades") [0].value;
+
+    localStorage.setItem("distanciaLS", dist);
+    localStorage.setItem("unidadLS", uni);
+    window.open("web2.html");
+}
+
+let cargarLS = () => {
+    const distancia= localStorage.getItem("distanciaLS");
+    const unidad = localStorage.getItem("unidadLS");
+    console.log(distancia);
+    console.log(unidad);
+    document.getElementById("dist").value = `${distancia} ${unidad}`;
 }
