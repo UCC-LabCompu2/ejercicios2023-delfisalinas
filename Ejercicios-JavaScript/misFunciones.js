@@ -4,14 +4,12 @@
  * @param {string} id - Id del elemento input del html
  * @param {number} valor - COntiene el valor del input que ingreso el usuario
  */
-
 convertirUnidades = (id, valor) => {
     let met, pul, pie, tar;
 
     if(valor.includes(",")){
         valor=valor.replace (",", ".");
     }
-
     if (isNaN(valor)){
         alert("El valor ingresado es incorrecto");
         met = " ";
@@ -44,8 +42,6 @@ convertirUnidades = (id, valor) => {
     document.lasUnidades.unid_pie.value= Number(pie).toFixed(2);
     document.lasUnidades.unid_yarda.value= Number(yar).toFixed(2);
 }
-
-
 /**
  * Convierte grados a radianes o radianes a grados
  * @method convertirGR
@@ -70,7 +66,6 @@ convertirGR = (id) => {
         }
 }
 }
-
 /**
  * Muestra o oculta un div en la parte inferior
  * @method mostrar_ocultar
@@ -83,12 +78,10 @@ let mostrar_ocultar = (id) =>{
         document.getElementsByName("unDiv")[0].style.display = 'none';
     }
 }
-
 /**
- * SUma 2 inputs introducidos por el usuario
+ * Suma 2 inputs introducidos por el usuario
  * @method sumar
  */
-//agregar verficacion de letras para no obtener resultados Nan
 let sumar =() =>{
     let res, s1, s2;
     s1=Number(document.operacionesMat.sum_num1.value)
@@ -115,7 +108,7 @@ let dividir =() =>{
     s1=Number(document.operacionesMat.div_num1.value)
     s2= Number(document.operacionesMat.div_num2.value)
     res= s1 /s2 ;
-    document.operacionesMat.div_total.value=res;
+    document.getElementById("totalD").innerHTML=res;
 }
 /**
  * Si el campo contiene una letra, blanquee el campo
@@ -128,8 +121,10 @@ let verLetra = (id, value) => {
         document.getElementById(id).value = " ";
     }
 }
-
-
+/**
+ * Redirige la primera pagina web a la segunda
+ * @method generarUrl
+ */
 let generarUrl = () => {
     const dist = document.getElementById("distancia").value;
     const uni = document.getElementsByName("unidades") [0].value;
@@ -138,6 +133,10 @@ let generarUrl = () => {
     window.open(urlCompl);
 }
 
+/**
+ * Carga los valores de la primera pagina web en la segunda
+ * @method cargarValor
+ */
 let cargarValor = () => {
     let urlCompleta = window.location.href;
     console.log(urlCompleta);
@@ -147,6 +146,10 @@ let cargarValor = () => {
     const unidad = urlCompleta[2];
     document.getElementById("dist").value = `${distancia} ${unidad}`;
 }
+/**
+ * Guarda los datos en la segunda pagina web, mediante local storage
+ * @method guardarLS
+ */
 let guardarLS = () => {
     const dist = document.getElementById("distancia").value;
     const uni = document.getElementsByName("unidades") [0].value;
@@ -155,11 +158,35 @@ let guardarLS = () => {
     localStorage.setItem("unidadLS", uni);
     window.open("web2.html");
 }
-
+/**
+ * Carga los valores de la primera pagina web en la segunda mediante local storage
+ * @method cargarLS
+ */
 let cargarLS = () => {
     const distancia= localStorage.getItem("distanciaLS");
     const unidad = localStorage.getItem("unidadLS");
     console.log(distancia);
     console.log(unidad);
     document.getElementById("dist").value = `${distancia} ${unidad}`;
+}
+/**
+ * Dibuja un circulo y un rectangulo mediante CANVAS
+ * @method dibujarCirculoCuadrado
+ */
+let dibujarCirculoCuadrado = () => {
+    const canvas = document.getElementById("myCanvas");
+    const ctx = canvas.getContext("2d");
+
+    let xMax = canvas.width;
+    let yMax = canvas.height;
+    ctx.fillStyle = "#333";
+    //Dibujar rectangulo
+    let margen = 5;
+    ctx.fillRect(0+margen, yMax-120-margen, 130, 120);
+
+   //Dibuja un circulo
+    ctx.arc (xMax/2, yMax/2, 100, 0, 2 * Math.PI);
+    ctx.stroke(); //IMP el STROKE para que dibuje las lineas
+    ctx.fill(); //pinta el interior
+
 }
