@@ -189,12 +189,19 @@ let dibujarCirculoCuadrado = () => {
     ctx.stroke(); //IMP el STROKE para que dibuje las lineas
     ctx.fill(); //pinta el interior
 }
-
+/**
+ * Mediante un boton limpia lo que se encuentre en el CANVAS
+ * @method limpiarCanvas
+ */
 let limpiarCanvas = () => {
     let canvas = document.getElementById("myCanvas");
     canvas.width = canvas.width;
 }
-
+/**
+ * Dibuja lineas en un CANVAS
+ * @method dibujar
+ */
+var bandera;
 let dibujar = () => {
     let canvas = document.getElementById("myCanvas");
     let ctx = canvas.getContext("2d");
@@ -203,6 +210,14 @@ let dibujar = () => {
     let posY = event.clientY;
     console.log(posX, posY);
 
-    ctx.fillRect(posX, posY, 5, 5);
-    ctx.fill;
+    canvas.onmousedown = function () {
+        bandera = true
+    };
+    canvas.onmouseup = function () {
+        bandera = false
+    };
+    if (bandera) {
+        ctx.fillRect(posX, posY, 5, 5);
+        ctx.fill;
+    }
 }
