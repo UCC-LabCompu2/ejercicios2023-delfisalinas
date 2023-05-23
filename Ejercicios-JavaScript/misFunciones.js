@@ -188,5 +188,21 @@ let dibujarCirculoCuadrado = () => {
     ctx.arc (xMax/2, yMax/2, 100, 0, 2 * Math.PI);
     ctx.stroke(); //IMP el STROKE para que dibuje las lineas
     ctx.fill(); //pinta el interior
+}
 
+let limpiarCanvas = () => {
+    let canvas = document.getElementById("myCanvas");
+    canvas.width = canvas.width;
+}
+
+let dibujar = () => {
+    let canvas = document.getElementById("myCanvas");
+    let ctx = canvas.getContext("2d");
+
+    let posX = event.clientX;
+    let posY = event.clientY;
+    console.log(posX, posY);
+
+    ctx.fillRect(posX, posY, 5, 5);
+    ctx.fill;
 }
