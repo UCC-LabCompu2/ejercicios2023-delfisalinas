@@ -163,11 +163,12 @@ let guardarLS = () => {
  * @method cargarLS
  */
 let cargarLS = () => {
-    const distancia= localStorage.getItem("distanciaLS");
-    const unidad = localStorage.getItem("unidadLS");
-    console.log(distancia);
-    console.log(unidad);
-    document.getElementById("dist").value = `${distancia} ${unidad}`;
+    console.log ("Se cargara el local storage")
+        let distancia= localStorage.getItem("distanciaLS");
+        let unidad = localStorage.getItem("unidadLS");
+    console.log("Lei" + distancia);
+    console.log("Lei" + unidad);
+    document.getElementById("dist").innerHTML = `${distancia} ${unidad}`;
 }
 /**
  * Dibuja un circulo y un rectangulo mediante CANVAS
@@ -217,7 +218,141 @@ let dibujar = () => {
         bandera = false
     };
     if (bandera) {
-        ctx.fillRect(posX, posY, 5, 5);
+        ctx.fillRect(posX-10, posY-121, 5, 5);
         ctx.fill;
     }
+}
+
+/**
+ * Otra forma de realizar el MINI PAINT, mediante el parámetro listener
+ * @method cargarListeners
+ */
+let cargarListeners = () => {
+    document.getElementById("myCanvas").addEventListener("mousemove", function (event){
+        let canvas = document.getElementById("myCanvas");
+        let ctx= canvas.getContext("2d");
+
+        let posX= event.clientX;
+        let posY= event.clientY;
+        console.log (posX,posY);
+        canvas.onmousedown = function (){
+            bandera=true
+        };
+        canvas.onmouseup = function (){
+          bandera=false
+        };
+        if (bandera) {
+            ctx.fillRect (posX-10, posY-121, 5, 5);
+            ctx.fill;
+        }
+
+    });
+}
+/**
+ * Otra forma de realizar el MINI PAINT, mediante el parámetro listener
+ * @method cargarListenerEjemplo
+ */
+let cargarListenerEjemplo = () => {
+    document.getElementById("myCanvas").addEventListener("mousemove", dibujar);
+}
+
+/**
+ * Realiza un cuadriculado y marca los ejes cartesianos X e Y
+ * @method dibujarCuadriculado
+ */
+let dibujarCuadriculado = () => {
+    const canvas = document.getElementById("myCanvas");
+    const ctx = canvas.getContext("2d");
+    const anchoMax= canvas.width;
+    const alturaMax = canvas.height;
+    const paso = 20;
+    let ejeX =-24; //tarea calcular este numero
+    let ejeY=-14; // CAMBIAR ESTE NUMERO
+
+    //Lineas verticales
+    for (let i=paso;i<anchoMax;i+=paso) {
+        ctx.beginPath();
+        ctx.moveTo(i, 0);
+        ctx.lineTo(i, alturaMax);
+        ctx.strokeStyle = "#333";
+        ctx.stroke();
+        ctx.font="10px Arial";
+        ctx.fillStyle = "#333";
+        ctx.fillText(ejeX, i, alturaMax/2);
+        ctx.closePath();
+        ejeX++;
+    }
+
+    //Lineas horizontales
+    for (let i=paso;i<alturaMax;i+=paso) {
+        ctx.beginPath();
+        ctx.moveTo(0, i);
+        ctx.lineTo(anchoMax, i);
+        ctx.strokeStyle = "#333";
+        ctx.stroke();
+        ctx.font="10px Arial";
+        ctx.fillStyle = "#333";
+        ctx.fillText(ejeY, anchoMax/2, i);
+        ctx.closePath();
+        ejeY++;
+    }
+
+    //Eje X
+    ctx.beginPath();
+    ctx.moveTo(0, alturaMax/2);
+    ctx.lineTo(anchoMax, alturaMax/2);
+    ctx.strokeStyle = "#c51515";
+    ctx.stroke();
+    ctx.closePath();
+
+    //Eje Y
+    ctx.beginPath();
+    ctx.moveTo(anchoMax/2, 0);
+    ctx.lineTo(anchoMax/2, alturaMax);
+    ctx.strokeStyle = "#c51515";
+    ctx.stroke();
+    ctx.closePath();
+}
+
+/**
+ * Dibuja una imagen en un lienzo canvas
+ * @method dibujarImagen
+ * @param {number} posX- Posicion de un valor en el eje cartesiano X
+ * @param  {number} posY- Posicion de un valor en el eje cartesiano Y
+ */
+let dibujarImagen = (posX, posY) => {
+    const canvas = document.getElementById("myCanvas");
+    const ctx = canvas.getContext("2d");
+    const anchoMax = canvas.width;
+    const alturaMax = canvas.height;
+
+    canvas.width = canvas.width;
+    console.log(posX, posY);
+    let img = new Image();
+    img.src = "images/auto.png";
+
+    if (posX<0 || posY<0 || posX>=anchoMax || posY>=alturaMax){
+        openDialog();
+    }else {
+        img.onload = function () {
+            ctx.drawImage(img, posX, posY);
+        }
+    }
+
+}
+/**
+ * Permite cerrar un dialogo
+ * @method cerrarDialog
+ */
+let cerrarDialog = () => {
+    const dialog = document.getElementById("myDialog");
+    dialog.close();
+}
+/**
+ * Permite abrir un dialogo
+ * @method openDialog
+ */
+let openDialog = () => {
+    const dialog = document.getElementById("myDialog");
+    dialog.showModal();
 }

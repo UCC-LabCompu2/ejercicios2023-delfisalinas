@@ -8,16 +8,14 @@
     <script type="text/javascript" src="misFunciones.js"></script>
 </head>
 
-<body>
-<h1>Canvas 2</h1>
-<p>Ejercicio: Dibujar un cuadriculado en un canvas. La función debe llamarse al presionar el boton.</p>
-<button onclick="dibujarCuadriculado()">
-    Dibujar Cuadriculado
-</button>
-<br>
-<canvas id="myCanvas" class="ejer" width="1000px" height="600px">
+<body onload="cargarListeners">
+<h1>Canvas 1</h1>
+<p>Ejercicio: Dibujar un Circulo y un cuadrado en una página. La función debe llamarse al cargar la página</p>
+<canvas id="myCanvas" class="ejer" width="800px" height="600px" onmousemove="dibujar(event)">
     Tu navegador no soporta el tag de HTML5 canvas.
 </canvas>
-
+<button type="button"  onclick="limpiarCanvas()">
+    Limpiar Canvas
+</button>
 </body>
 </html>
