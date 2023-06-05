@@ -47,25 +47,32 @@ convertirUnidades = (id, valor) => {
  * @method convertirGR
  * @param {string} id - Id del elemento input del html
  */
-// mejorar esta funcion
-convertirGR = (id) => {
-    let gr, rad;
-    if(id=="grados"){
-        gr= document.getElementById("grados").value;
-        document.getElementById("radianes").value= (gr*Math.PI)/180;
-        if (isNaN(gr)){
+const convertirGR = (id) => {
+    const gradosInput = document.getElementById("grados");
+    const radianesInput = document.getElementById("radianes");
+
+    let grados, radianes;
+
+    if (id === "grados") {
+        grados = parseFloat(gradosInput.value);
+        if (isNaN(grados)) {
             alert("El valor ingresado es incorrecto");
-            gr= " ";
+            gradosInput.value = "";
+            radianesInput.value = "";
+        } else {
+            radianesInput.value = (grados * Math.PI) / 180;
         }
-    } else if(id=="radianes") {
-        rad= document.getElementById("radianes").value;
-    document.getElementById("grados").value= (rad*180)/Math.PI;
-        if (isNaN(rad)){
+    } else if (id === "radianes") {
+        radianes = parseFloat(radianesInput.value);
+        if (isNaN(radianes)) {
             alert("El valor ingresado es incorrecto");
-            rad= " ";
+            radianesInput.value = "";
+            gradosInput.value = "";
+        } else {
+            gradosInput.value = (radianes * 180) / Math.PI;
         }
-}
-}
+    }
+};
 /**
  * Muestra o oculta un div en la parte inferior
  * @method mostrar_ocultar
@@ -89,6 +96,10 @@ let sumar =() =>{
     res= s1 +s2 ;
     document.getElementById("totalS").innerHTML=res;
 }
+/**
+ * Suma 2 inputs introducidos por el usuario
+ * @method sumar
+ */
 let restar =() =>{
     let res, s1, s2;
     s1=Number(document.operacionesMat.res_num1.value)
@@ -96,6 +107,10 @@ let restar =() =>{
     res= s1 -s2 ;
     document.getElementById("totalR").innerHTML=res;
 }
+/**
+ * Multiplica 2 inputs introducidos por el usuario
+ * @method multiplicacion
+ */
 let multiplicacion =() =>{
     let res, s1, s2;
     s1=Number(document.operacionesMat.mul_num1.value)
@@ -103,6 +118,10 @@ let multiplicacion =() =>{
     res= s1 *s2 ;
     document.getElementById("totalM").innerHTML=res;
 }
+/**
+ * Divide 2 inputs introducidos por el usuario
+ * @method dividir
+ */
 let dividir =() =>{
     let res, s1, s2;
     s1=Number(document.operacionesMat.div_num1.value)
@@ -259,61 +278,100 @@ let cargarListenerEjemplo = () => {
 /**
  * Realiza un cuadriculado y marca los ejes cartesianos X e Y
  * @method dibujarCuadriculado
+ * @param {number} inicioX- posicion X
+ * @param  {number} inicioY- posicion Y
  */
-let dibujarCuadriculado = () => {
+let dibujarCuadriculado = (inicioX, inicioY) => {
     const canvas = document.getElementById("myCanvas");
     const ctx = canvas.getContext("2d");
-    const anchoMax= canvas.width;
+    const anchoMax = canvas.width;
     const alturaMax = canvas.height;
     const paso = 20;
-    let ejeX =-24; //tarea calcular este numero
-    let ejeY=-14; // CAMBIAR ESTE NUMERO
+    let ejeX = inicioX;
+    let ejeY = inicioY;
 
-    //Lineas verticales
-    for (let i=paso;i<anchoMax;i+=paso) {
+    // Lineas verticales
+    for (let i = paso; i < anchoMax; i += paso) {
         ctx.beginPath();
         ctx.moveTo(i, 0);
         ctx.lineTo(i, alturaMax);
         ctx.strokeStyle = "#333";
         ctx.stroke();
-        ctx.font="10px Arial";
+        ctx.font = "10px Arial";
         ctx.fillStyle = "#333";
-        ctx.fillText(ejeX, i, alturaMax/2);
+        ctx.fillText(ejeX, i, alturaMax / 2);
         ctx.closePath();
         ejeX++;
     }
 
-    //Lineas horizontales
-    for (let i=paso;i<alturaMax;i+=paso) {
+    // Lineas horizontales
+    for (let i = paso; i < alturaMax; i += paso) {
         ctx.beginPath();
         ctx.moveTo(0, i);
         ctx.lineTo(anchoMax, i);
         ctx.strokeStyle = "#333";
         ctx.stroke();
-        ctx.font="10px Arial";
+        ctx.font = "10px Arial";
         ctx.fillStyle = "#333";
-        ctx.fillText(ejeY, anchoMax/2, i);
+        ctx.fillText(ejeY, anchoMax / 2, i);
         ctx.closePath();
         ejeY++;
     }
 
-    //Eje X
+    // Eje X
     ctx.beginPath();
-    ctx.moveTo(0, alturaMax/2);
-    ctx.lineTo(anchoMax, alturaMax/2);
+    ctx.moveTo(0, alturaMax / 2);
+    ctx.lineTo(anchoMax, alturaMax / 2);
     ctx.strokeStyle = "#c51515";
     ctx.stroke();
     ctx.closePath();
 
-    //Eje Y
+    // Eje Y
     ctx.beginPath();
-    ctx.moveTo(anchoMax/2, 0);
-    ctx.lineTo(anchoMax/2, alturaMax);
+    ctx.moveTo(anchoMax / 2, 0);
+    ctx.lineTo(anchoMax / 2, alturaMax);
     ctx.strokeStyle = "#c51515";
     ctx.stroke();
     ctx.closePath();
+};
+
+/**
+ * Realiza una animacion simple de una imagen
+ * @method animarAuto
+ */
+var x=0;
+var dx = 2;
+let animarAuto = () => {
+    const canvas = document.getElementById("myCanvas");
+    const ctx = canvas.getContext("2d");
+
+    let img = new Image();
+    img.src = "images/auto.png";
+
+    img.onload = function () {
+        canvas.width=canvas.width;
+        ctx.drawImage(img, x, 100);
+        requestAnimationFrame(animarAuto);
+    }
+    x = x+dx;
+    console.log("La coordenada X es: " +x);
+    if (x>canvas.width){
+        x=0;
+    }
 }
-
+var intervalId;
+let detenerAuto = () => {
+    console.log("Se detuvo el auto")
+    clearInterval(intervalId); // Detener la animación
+}
+let comenzarAnimacion = () => {
+    console.log("Se llamo a comenzar animacion")
+    intervalId = setInterval(animarAuto, 10);
+    setTimeout(detenerAuto, 6000);
+}
+let animarNuevo = () => {
+    requestAnimationFrame(animarAuto);
+}
 /**
  * Dibuja una imagen en un lienzo canvas
  * @method dibujarImagen
@@ -356,3 +414,4 @@ let openDialog = () => {
     const dialog = document.getElementById("myDialog");
     dialog.showModal();
 }
+
