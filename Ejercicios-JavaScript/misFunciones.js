@@ -378,7 +378,7 @@ let comenzarAnimacion = () => {
     setTimeout(detenerAuto, 6000);
 }
 /**
- * Permite detener la animacion del auto
+ * Otra forma de animar el auto
  * @method animarNuevo
  */
 let animarNuevo = () => {
@@ -426,4 +426,18 @@ let openDialog = () => {
     const dialog = document.getElementById("myDialog");
     dialog.showModal();
 }
-
+/**
+ * Otra forma de animar el auto pero con un setTimeout
+ * @method animarNuevo2
+ */
+let animarNuevo2 = () => {
+    setTimeout(cancelarAnimacion, 6000);
+    requestAnimationFrame(animarAuto);
+}
+/**
+ * Permite cancelar la animación utilizando el ID almacenado
+ * @method cancelarAnimacion
+ */
+let cancelarAnimacion = () => {
+    cancelAnimationFrame(animationId); // Cancelar la animación utilizando el ID almacenado
+};
